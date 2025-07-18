@@ -73,17 +73,7 @@ class CategoryDetail(APIView):
             "products": serializer.data
         })
     
-    
 
-# class RegisterCustomer(APIView):
-#     def get(self, request, format=None):
-#         customers = Customer.objects.all()
-#         serializer = CustomerSerializer(customers, many=True)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         else:
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class CustomerRegisterView(generics.CreateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
@@ -123,13 +113,32 @@ class LoginView(APIView):
         return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
     
 
-@api_view(['POST'])
+@api_view(['GET'])
 def search(request):
-    query = request.data.get('query', '')
+    query = request.query_params.get('q', '')
     if not query:
         return Response({'error': 'No search query provided'}, status=status.HTTP_400_BAD_REQUEST)
 
     products = Product.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
-    
+
+
+# class SearchView(APIView):
+#     def get(self, request, format=None):
+#         query = request.query_params.get('q', '')
+#         if not query:
+#             return Response({'error': 'No search query provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+#         products = Product.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
+#         serializer = ProductSerializer(products, many=True)
+#         return Response(serializer.data)
+
+class CartView(APIView):
+    def get(self, request, format=None):
+        # Placeholder for retrieving cart items
+        return Response({"message": "Cart retrieved successfully"})
+
+    def post(self, request, format=None):
+        # Placeholder for adding items to the cart
+        return Response({"message": "Item added to cart successfully"})

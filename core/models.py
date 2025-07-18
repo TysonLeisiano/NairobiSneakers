@@ -15,6 +15,7 @@ class Category(models.Model):
 
     class Meta:
         ordering = ('name',)
+        verbose_name_plural = 'categories'
     
     def __str__(self):
         return self.name
@@ -36,6 +37,7 @@ class Product(models.Model):
     class Meta:
         ordering = ('-date_added',)
         unique_together = ('category', 'slug')
+        
     
     def __str__(self):
         return self.name
